@@ -1,131 +1,139 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCart,
-  clearCart,
-  decreaseCart,
-  getTotals,
-  removeFromCart,
-} from "./assetsPage/cartSlice";
+import React, { Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
+import { useCart } from './CartContext';
 
-import { Link } from "react-router-dom";
-
-const Cart = () => {
-  const cart = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getTotals());
-  }, [cart, dispatch]);
-
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
-  };
-  const handleDecreaseCart = (product) => {
-    dispatch(decreaseCart(product));
-  };
-  const handleRemoveFromCart = (product) => {
-    dispatch(removeFromCart(product));
-  };
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
+export default function Cart() {
+  const { cartItems, removeFromCart, clearCart } = useCart();
+  const [open, setOpen] = React.useState(true);
+  
   return (
-    <div className="cart-container">
-      <h2>Shopping Cart</h2>
-      {cart.cartItems.length === 0 ? (
-        <div className="cart-empty">
-          <p>Your cart is currently empty</p>
-          <div className="start-shopping">
-            <Link to="/">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="currentColor"
-                className="bi bi-arrow-left"
-                viewBox="0 0 16 16"
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog className="relative z-10" onClose={setOpen}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-in-out duration-500"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in-out duration-500"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+              <Transition.Child
+                as={Fragment}
+                enter="transform transition ease-in-out duration-500 sm:duration-700"
+                enterFrom="translate-x-full"
+                enterTo="translate-x-0"
+                leave="transform transition ease-in-out duration-500 sm:duration-700"
+                leaveFrom="translate-x-0"
+                leaveTo="translate-x-full"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-                />
-              </svg>
-              <span>Start Shopping</span>
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className="titles">
-            <h3 className="product-title">Product</h3>
-            <h3 className="price">Price</h3>
-            <h3 className="quantity">Quantity</h3>
-            <h3 className="total">Total</h3>
-          </div>
-          <div className="cart-items">
-            {cart.cartItems &&
-              cart.cartItems.map((cartItem) => (
-                <div className="cart-item" key={cartItem.id}>
-                  <div className="cart-product">
-                    <img src={cartItem.image} alt={cartItem.name} />
-                    <div>
-                      <h3>{cartItem.name}</h3>
-                      <p>{cartItem.desc}</p>
-                      <button onClick={() => handleRemoveFromCart(cartItem)}>
-                        Remove
-                      </button>
+                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                    <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                      <div className="flex items-start justify-between">
+                        <Dialog.Title className="text-lg font-medium text-gray-900">Shopping cart</Dialog.Title>
+                        <div className="ml-3 flex h-7 items-center">
+                          <button
+                            type="button"
+                            className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                            onClick={() => setOpen(false)}
+                          >
+                            <span className="absolute -inset-0.5" />
+                            <span className="sr-only">Close panel</span>
+                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="mt-8">
+                        <div className="flow-root">
+                          <ul role="list" className="-my-6 divide-y divide-gray-200">
+                            {cartItems.map((product) => (
+                              <li key={product.id} className="flex py-6">
+                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                  <img
+                                    src={`http://127.0.0.1:8000/${product.file_path}`}
+                                    alt={product.name}
+                                    className="h-full w-full object-cover object-center"
+                                  />
+                                </div>
+
+                                <div className="ml-4 flex flex-1 flex-col">
+                                  <div>
+                                    <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <h3>
+                                        <a href="#">{product.name}</a>
+                                      </h3>
+                                      <p className="ml-4">{product.price} DH</p>
+                                    </div>
+                                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                                  </div>
+                                  <div className="flex flex-1 items-end justify-between text-sm">
+                                    <p className="text-gray-500">Qty 1</p>
+
+                                    <div className="flex">
+                                      <button
+                                        type="button"
+                                        className="font-medium text-red-500 hover:text-red-700"
+                                        onClick={() => removeFromCart(product.id)}
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+                      <div className="flex justify-between text-base font-medium text-gray-900">
+                        <p>Subtotal</p>
+                        <p>{cartItems.reduce((total, product) => total + Number(product.price), 0)} DH</p>
+                      </div>
+                      <button onClick={clearCart} className="mt-0.5 text-sm text-gray-500 hover:text-red-500">remove all product.</button>
+                      <div className="mt-6">
+                        <a
+                          href="#"
+                          className="flex items-center uppercase justify-center rounded-md border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                        >
+                          reserve now
+                        </a>
+                      </div>
+                      <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                        <p>
+                          <Link to={"/app/product"}>
+                            or{' '}
+                            <button
+                              type="button"
+                              className="font-medium text-green-600 hover:text-green-500"
+                              onClick={() => setOpen(false)}
+                            >
+                              Continue Shopping
+                              <span aria-hidden="true"> &rarr;</span>
+                            </button>
+                          </Link>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="cart-product-price">${cartItem.price}</div>
-                  <div className="cart-product-quantity">
-                    <button onClick={() => handleDecreaseCart(cartItem)}>
-                      -
-                    </button>
-                    <div className="count">{cartItem.cartQuantity}</div>
-                    <button onClick={() => handleAddToCart(cartItem)}>+</button>
-                  </div>
-                  <div className="cart-product-total-price">
-                    ${cartItem.price * cartItem.cartQuantity}
-                  </div>
-                </div>
-              ))}
-          </div>
-          <div className="cart-summary">
-            <button className="clear-btn" onClick={() => handleClearCart()}>
-              Clear Cart
-            </button>
-            <div className="cart-checkout">
-              <div className="subtotal">
-                <span>Subtotal</span>
-                <span className="amount">${cart.cartTotalAmount}</span>
-              </div>
-              <p>Taxes and shipping calculated at checkout</p>
-              <button>Check out</button>
-              <div className="continue-shopping">
-                <Link to="/">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    className="bi bi-arrow-left"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-                    />
-                  </svg>
-                  <span>Continue Shopping</span>
-                </Link>
-              </div>
+                </Dialog.Panel>
+              </Transition.Child>
             </div>
           </div>
         </div>
-      )}
-    </div>
+      </Dialog>
+    </Transition.Root>
   );
-};
-
-export default Cart;
+}

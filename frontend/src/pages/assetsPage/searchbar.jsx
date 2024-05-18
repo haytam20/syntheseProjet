@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
+import './cartproduct.css';
 
-function SearchBar({ searchTerm, onSearchChange, onPriceFilterChange }) {
+function SearchBar({ products, onSearchChange, onPriceFilterChange }) {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
     onSearchChange(e.target.value);
   };
 
   const handleMinPriceChange = (e) => {
     const newMinPrice = e.target.value;
     setMinPrice(newMinPrice);
-    onPriceFilterChange(e, 'min'); // Pass the event object and filter type
+    onPriceFilterChange(newMinPrice, maxPrice);
   };
 
   const handleMaxPriceChange = (e) => {
     const newMaxPrice = e.target.value;
     setMaxPrice(newMaxPrice);
-    onPriceFilterChange(e, 'max'); // Pass the event object and filter type
+    onPriceFilterChange(minPrice, newMaxPrice);
   };
 
   const handleSearchSubmit = (e) => {
@@ -25,59 +28,57 @@ function SearchBar({ searchTerm, onSearchChange, onPriceFilterChange }) {
     // Add logic to handle search
   };
 
-
   return (
-    <form onSubmit={handleSearchSubmit}>
-      <div className="bg-white rounded-lg border border-gray-300 overflow-hidden">
-        <div className="relative flex items-center">
-          <input
-            type="text"
-            className="w-full rounded-none border-none py-3 px-4 pl-10 pr-32 focus:outline-none focus:ring-0"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg
-              className="h-5 w-5 text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clipRule="evenodd"
+    <>
+      <div className="  flex flex-col justify-center">
+        <div className="relative p-12 w-full sm:max-w-2xl sm:mx-auto">
+          <div className="overflow-hidden z-0 rounded-full relative p-3">
+            <form role="form" className="relative flex z-50 bg-white rounded-full" onSubmit={handleSearchSubmit}>
+              <input
+                type="text"
+                placeholder="enter your search here"
+                className="rounded-full flex-1 px-6 py-4 text-gray-700 focus:outline-none"
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
-            </svg>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="number"
-              placeholder="Price min"
-              value={minPrice}
-              onChange={handleMinPriceChange}
-              className="bg-gray-200 outline-none placeholder-gray-500 text-gray-700 rounded-l-lg px-4 py-2"
-            />
-            <input
-              type="number"
-              placeholder="Price max"
-              value={maxPrice}
-              onChange={handleMaxPriceChange}
-              className="bg-gray-200 outline-none placeholder-gray-500 text-gray-700 rounded-r-lg px-4 py-2"
-            />
-            <button
-            
-              type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-r-lg"
-            >
-              Search
-            </button>
+              <button className="bg-[#083752] text-white rounded-full font-semibold px-8 py-4 hover:bg-gray-700 focus:bg-[#083752] focus:outline-none">
+                Search
+              </button>
+            </form>
+            <div className="glow glow-1 z-10 bg-green-100 absolute"></div>
+            <div className="glow glow-2 z-20 bg-green-200 absolute"></div>
+            <div className="glow glow-3 z-30 bg-green-300 absolute"></div>
+            <div className="glow glow-4 z-40 bg-green-400 absolute"></div>
           </div>
         </div>
+        {/* <div className="flex justify-center my-4">
+          <div className="mx-2">
+            <label htmlFor="minPrice" className="block text-gray-700 font-bold mb-2">
+              Min Price
+            </label>
+            <input
+              type="number"
+              id="minPrice"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={minPrice}
+              onChange={handleMinPriceChange}
+            />
+          </div>
+          <div className="mx-2">
+            <label htmlFor="maxPrice" className="block text-gray-700 font-bold mb-2">
+              Max Price
+            </label>
+            <input
+              type="number"
+              id="maxPrice"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={maxPrice}
+              onChange={handleMaxPriceChange}
+            />
+          </div>
+        </div> */}
       </div>
-    </form>
+    </>
   );
 }
 

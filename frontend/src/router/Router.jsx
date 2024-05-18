@@ -9,14 +9,12 @@ import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
 import AddProduct from "../pages/Addproduct";
 import UserTable from "../pages/users";
-import WelcomeMessage from "../pages/WelcomePageUsers";
 import WelcomeMessageAdmin from "../pages/WelcomePageAdmin";
 import Profile from "../pages/profileinfo";
 import Contact from '../pages/Contact';
 import ForgotPassword from "../pages/forgotpassword";
 import Notification from "../pages/Notification";
 import ResetPassword from "../pages/ResetPassword";
-import Cart from "../pages/Cart";
 import ClientHome from "../pages/WelcomePageUsers";
 
 export const router = createBrowserRouter([
@@ -25,11 +23,11 @@ export const router = createBrowserRouter([
     element: <GuestLayout />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "Contact", element: <Contact /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "contact", element: <Contact /> },
       { path: "password-reset/:token", element: <ResetPassword /> },
-      { path: "/forgotpassword", element: <ForgotPassword /> },
+      { path: "forgotpassword", element: <ForgotPassword /> },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -40,9 +38,8 @@ export const router = createBrowserRouter([
       { path: "/app", element: <ClientHome /> },
       { path: "product", element: <Product /> },
       { path: "profileinfo", element: <Profile /> },
-      { path: "Contact", element: <Contact /> },
+      { path: "contact", element: <Contact /> },
       { path: "notification", element: <Notification /> },
-      { path: "cart", element: <Cart/> },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -53,7 +50,7 @@ export const router = createBrowserRouter([
       { path: "/admin", element: <WelcomeMessageAdmin /> },
       { path: "product", element: <Product /> },
       { path: "addproduct", element: <AddProduct /> },
-      { path: "Contact", element: <Contact /> },
+      { path: "contact", element: <Contact /> },
       { path: "users", element: <UserTable /> },
       { path: "profileinfo", element: <Profile /> },
       { path: "notification", element: <Notification /> },

@@ -1,104 +1,102 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Istok Web", sans-serif;
+/*
+ * View a PURE 100% Tailwind CSS version here:
+ * https://play.tailwindcss.com/Vg6H4j8Fux
+ */
+ .glow {
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  border-radius: 100%;
 }
 
-
-
-.card {
-  position: relative;
-  width: 320px;
-  height: 480px;
-  background: #191919;
-  border-radius: 20px;
-  overflow: hidden;
+.glow-1 {
+  animation: glow1 4s linear infinite;
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  width: 100%;
-  height: 100%;
-  background: #ffce00;
-  transform: skewY(345deg);
-  transition: 0.5s;
+.glow-2 {
+  animation: glow2 4s linear infinite;
+  animation-delay: 100ms;
 }
 
-.card:hover::before {
-  top: -70%;
-  transform: skewY(390deg);
+.glow-3 {
+  animation: glow3 4s linear infinite;
+  animation-delay: 200ms;
 }
 
-.card::after {
-  content: "CORSAIR";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  font-weight: 600;
-  font-size: 6em;
-  color: rgba(0, 0, 0, 0.1);
+.glow-4 {
+  animation: glow4 4s linear infinite;
+  animation-delay: 300ms;
 }
 
-.card .imgBox {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 20px;
-  z-index: 1;
+@keyframes glow1 {
+  0% {
+    transform: translate(10%, 10%) scale(1);
+  }
+  25% {
+    transform: translate(-10%, 10%) scale(1);
+  }
+  50% {
+    transform: translate(-10%, -10%) scale(1);
+  }
+  75% {
+    transform: translate(10%, -10%) scale(1);
+  }
+  100% {
+    transform: translate(10%, 10%) scale(1);
+  }
 }
 
-.card .contentBox {
-  position: relative;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 2;
+@keyframes glow2 {
+  0% {
+    transform: translate(-10%, -10%) scale(1);
+  }
+  25% {
+    transform: translate(10%, -10%) scale(1);
+  }
+  50% {
+    transform: translate(10%, 10%) scale(1);
+  }
+  75% {
+    transform: translate(-10%, 10%) scale(1);
+  }
+  100% {
+    transform: translate(-10%, -10%) scale(1);
+  }
 }
 
-.card .contentBox h3 {
-  font-size: 18px;
-  color: white;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+@keyframes glow3 {
+  0% {
+    transform: translate(-10%, 10%) scale(1);
+  }
+  25% {
+    transform: translate(-10%, -10%) scale(1);
+  }
+  50% {
+    transform: translate(10%, -10%) scale(1);
+  }
+  75% {
+    transform: translate(10%, 10%) scale(1);
+  }
+  100% {
+    transform: translate(-10%, 10%) scale(1);
+  }
 }
 
-.card .contentBox .price {
-  font-size: 24px;
-  color: white;
-  font-weight: 700;
-  letter-spacing: 1px;
+@keyframes glow4 {
+  0% {
+    transform: translate(10%, -10%) scale(1);
+  }
+  25% {
+    transform: translate(10%, 10%) scale(1);
+  }
+  50% {
+    transform: translate(-10%, 10%) scale(1);
+  }
+  75% {
+    transform: translate(-10%, -10%) scale(1);
+  }
+  100% {
+    transform: translate(10%, -10%) scale(1);
+  }
 }
-
-.card .contentBox .buy {
-  position: relative;
-  top: 100px;
-  opacity: 0;
-  padding: 10px 30px;
-  margin-top: 15px;
-  color: #000000;
-  text-decoration: none;
-  background: #ffce00;
-  border-radius: 30px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: 0.5s;
-}
-
-.card:hover .contentBox .buy {
-  top: 0;
-  opacity: 1;
-}
-
-.mouse {
-  height: 300px;
-  width: auto;
-} */

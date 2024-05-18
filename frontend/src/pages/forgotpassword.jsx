@@ -42,7 +42,7 @@ function ForgotPassword() {
 
                     <button
                         type="submit"
-                        className="w-full py-3 font-medium text-white bg-teal-300 hover:bg-teal-400 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center"
+                        className="w-full py-3 font-medium text-white bg-green-400 hover:bg-green-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ function ForgotPassword() {
                     </button>
                     <p className="text-center">
                         Not registered yet?{' '}
-                        <Link to={'/register'} className="text-teal-400 font-medium inline-flex space-x-1 items-center">
+                        <Link to={'/register'} className="text-green-400 font-medium inline-flex space-x-1 items-center">
                             <span>Register now </span>
                             <span>
                                 <svg

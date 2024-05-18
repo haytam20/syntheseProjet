@@ -36,7 +36,7 @@ const ClientHome = () => {
           </nav>
           <header className="container px-4 lg:flex mt-10 items-center h-full lg:mt-0">
             <div className="w-full">
-              <h1 className="text-4xl lg:text-6xl font-bold">Welcome, <span className='text-4xl text-green-500 font-bold mb-2 text-transform: uppercase'>{userName}</span>
+              <h1 className="text-4xl lg:text-6xl font-bold">Welcome, <span className='text-5xl text-green-500 font-bold mb-2 text-transform: uppercase'>{userName}</span>
               </h1>
               <h3></h3>
                <span className="text-green-500 text-2xl font-bold"><br />Admin</span> 
