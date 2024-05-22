@@ -85,6 +85,12 @@ const Navadmin = () => {
                 >
                   Users
                 </Link>
+                <Link
+                  to="/admin/reservation"
+                  className="text-green-500 uppercase hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                >
+                 Reservation
+                </Link>
               </div>
             </div>
           </div>

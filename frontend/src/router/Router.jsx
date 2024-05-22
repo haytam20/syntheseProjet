@@ -16,6 +16,7 @@ import ForgotPassword from "../pages/forgotpassword";
 import Notification from "../pages/Notification";
 import ResetPassword from "../pages/ResetPassword";
 import ClientHome from "../pages/WelcomePageUsers";
+import Reservation from "../pages/reservation";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
       { path: "users", element: <UserTable /> },
       { path: "profileinfo", element: <Profile /> },
       { path: "notification", element: <Notification /> },
+      { path: "reservation", element: < Reservation /> },
       { path: "*", element: <NotFound /> },
     ],
   },

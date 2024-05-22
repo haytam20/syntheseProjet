@@ -55,7 +55,7 @@ const ClientHome = () => {
         </div>
       </div>
       <img
-        src="https://images.unsplash.com/photo-1536147116438-62679a5e01f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+        src="https://i.pinimg.com/474x/c9/f5/ea/c9f5ea06ed5848185d14414660d966b9.jpg"
         alt="Leafs"
         className="w-full h-48 object-cover sm:h-screen sm:w-4/12"
       />

@@ -21,7 +21,7 @@ const ProductCard = ({ product, handleReturnClick }) => {
   };
 
   const handleAddToCart = () => {
-    addToCart({ ...product, qty });
+    addToCart(product, qty);
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);

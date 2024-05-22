@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\ReservationController;
 
 // Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //     return $request->user();
@@ -28,3 +29,10 @@ Route::get('/profile', [AuthController::class, 'getUserProfile']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
 // Password Reset Routes
 Route::post('/password/reset-link', [PasswordResetLinkController::class, 'store']);
+
+
+// routes/api.php
+Route::get('/reservations', [ReservationController::class, 'index']);
+Route::post('/reservations', [ReservationController::class, 'store']);
+Route::put('/reservations/{reservationId}/accept', [ReservationController::class, 'acceptReservation']);
+Route::put('/reservations/{reservationId}/reject', [ReservationController::class, 'rejectReservation']);
