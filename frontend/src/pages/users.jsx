@@ -86,8 +86,9 @@ function UserTable() {
     const filteredUsers = users.filter(user => {
         return (
             userData && user.id !== userData.id && // Exclude the user with userData.id
-            (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+            (user.id.toString().includes(searchTerm) || 
+             user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             user.email.toLowerCase().includes(searchTerm.toLowerCase()))
         );
     });
 
@@ -102,7 +103,7 @@ function UserTable() {
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg py-6">
             {editingUser && <EditUserForm user={editingUser} onUpdate={handleUpdateUser} onClose={() => setEditingUser(null)} />}
-            <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+            <div className="flex items-center m-4 justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <label htmlFor="table-search" className="sr-only">Search</label>
                 <div className="relative">
                     <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">

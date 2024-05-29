@@ -17,6 +17,7 @@ import Notification from "../pages/Notification";
 import ResetPassword from "../pages/ResetPassword";
 import ClientHome from "../pages/WelcomePageUsers";
 import Reservation from "../pages/reservation";
+import ReservationHistory from "../pages/assetsPage/ReservationHistory";
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,7 @@ export const router = createBrowserRouter([
       { path: "profileinfo", element: <Profile /> },
       { path: "notification", element: <Notification /> },
       { path: "reservation", element: < Reservation /> },
+      { path: "history", element: < ReservationHistory /> },
       { path: "*", element: <NotFound /> },
     ],
   },

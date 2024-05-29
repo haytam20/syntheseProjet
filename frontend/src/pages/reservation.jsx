@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Reservation() {
   const [reservations, setReservations] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch reservations from the server
     fetchReservations();
 
-    // Update the date every second
     const interval = setInterval(() => {
       setCurrentDate(new Date());
     }, 1000);
 
-    // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
   }, []);
 
   const fetchReservations = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/reservations');
-      setReservations(response.data);
+      const filteredReservations = response.data.filter(reservation => reservation.is_accepted === null);
+      setReservations(filteredReservations);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
@@ -31,7 +31,7 @@ function Reservation() {
     try {
       const response = await axios.put(`http://localhost:8000/api/reservations/${reservationId}/accept`);
       console.log(response.data.message);
-      fetchReservations(); // Fetch updated reservations after accepting
+      fetchReservations();
     } catch (error) {
       console.error('Error accepting reservation:', error);
     }
@@ -41,40 +41,46 @@ function Reservation() {
     try {
       const response = await axios.put(`http://localhost:8000/api/reservations/${reservationId}/reject`);
       console.log(response.data.message);
-      fetchReservations(); // Fetch updated reservations after rejecting
+      fetchReservations();
     } catch (error) {
       console.error('Error rejecting reservation:', error);
     }
   };
 
   return (
-    <>
-      <div className="relative py-10 overflow-x-auto shadow-md sm:rounded-lg">
-        <p className="text-gray-800 text-lg mb-4">
-          Current Date: {currentDate.toLocaleString()}
-        </p>
+    <div className="relative py-10 overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="flex justify-between mb-4 m-6">
+        <h2 className="text-xl font-bold">Pending Reservations</h2>
+        <Link to="/admin/history">
+          <button className="bg-gray-700 hover:bg-green-500 text-white font-bold py-2 px-2 rounded m-5">
+            View Reservation History
+          </button>
+        </Link>
+      </div>
+
+      <div className="overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-16 py-3">
+              <th scope="col" className="px-4 md:px-6 py-3">
                 <span className="sr-only">Image</span>
               </th>
-              <th scope="col" className="px-6 py-3 uppercase">
-                user ID
+              <th scope="col" className="px-4 md:px-6 py-3 uppercase">
+                User ID
               </th>
-              <th scope="col" className="px-6 py-3">
-                Product name
+              <th scope="col" className="px-4 md:px-6 py-3">
+                Product Name
               </th>
-              <th scope="col" className="px-6 py-3">
-                description
+              <th scope="col" className="px-4 md:px-6 py-3">
+                Description
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 md:px-6 py-3">
                 Qty
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 md:px-6 py-3">
                 Price
               </th>
-              <th scope="col" className="px-40 py-3">
+              <th scope="col" className="px-4 md:px-40 py-3">
                 Action
               </th>
             </tr>
@@ -92,27 +98,27 @@ function Reservation() {
                     alt={reservation.product_name}
                   />
                 </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                <td className="px-4 md:px-6 py-4 font-semibold text-gray-900 dark:text-white">
                   {reservation.user_id}
                 </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                <td className="px-4 md:px-6 py-4 font-semibold text-gray-900 dark:text-white">
                   {reservation.product_name}
                 </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                <td className="px-4 md:px-6 py-4 font-semibold text-gray-900 dark:text-white">
                   {reservation.product_description}
                 </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                <td className="px-4 md:px-6 py-4 font-semibold text-gray-900 dark:text-white">
                   {reservation.product_qty}
                 </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                <td className="px-4 md:px-6 py-4 font-semibold text-gray-900 dark:text-white">
                   {reservation.product_price} DH
                 </td>
-                <td className="px-6 py-4 m-6 flex justify-center">
+                <td className="px-4 md:px-6 py-10 flex justify-center">
                   <button
                     className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-md mr-2 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-green-400"
                     onClick={() => handleAcceptReservation(reservation.id)}
                   >
-                    Accept Reservation
+                    Accept  Reservation
                   </button>
                   <button
                     className="bg-gray-700 hover:bg-red-500 text-white px-4 py-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -126,7 +132,11 @@ function Reservation() {
           </tbody>
         </table>
       </div>
-    </>
+
+      <Link to="/admin/history" className="text-blue-500 hover:underline mt-4 inline-block">
+        View Reservation History
+      </Link>
+    </div>
   );
 }
 

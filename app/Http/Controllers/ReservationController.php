@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Notifications\ReservationStatusNotification;
 use Illuminate\Http\Request;
 use App\Events\ReservationUpdated;
 
@@ -10,7 +11,7 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = Reservation::all();
+        $reservations = Reservation::whereNull('is_accepted')->get();
         return response()->json($reservations);
     }
 
@@ -46,21 +47,35 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::findOrFail($reservationId);
         $reservation->is_accepted = true;
+        $reservation->status = 'accepted';
         $reservation->save();
 
         event(new ReservationUpdated($reservation));
 
-        // Additional logic if needed
+        // Notify user
+        $reservation->user->notify(new ReservationStatusNotification($reservation, 'accepted'));
+
+        return response()->json(['message' => 'Reservation accepted!']);
     }
 
     public function rejectReservation($reservationId)
     {
         $reservation = Reservation::findOrFail($reservationId);
         $reservation->is_accepted = false;
+        $reservation->status = 'rejected';
         $reservation->save();
 
         event(new ReservationUpdated($reservation));
 
-        // Additional logic if needed
+        // Notify user
+        $reservation->user->notify(new ReservationStatusNotification($reservation, 'rejected'));
+
+        return response()->json(['message' => 'Reservation rejected!']);
     }
+    public function history()
+    {
+        $reservations = Reservation::where('status', '!=', 'pending')->get();
+        return response()->json($reservations);
+    }
+
 }

@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\NotificationController;
+// use App\Http\Controllers\NotificationController;
 
 // Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //     return $request->user();
@@ -36,3 +38,9 @@ Route::get('/reservations', [ReservationController::class, 'index']);
 Route::post('/reservations', [ReservationController::class, 'store']);
 Route::put('/reservations/{reservationId}/accept', [ReservationController::class, 'acceptReservation']);
 Route::put('/reservations/{reservationId}/reject', [ReservationController::class, 'rejectReservation']);
+Route::get('/reservation-history', [ReservationController::class, 'history']);
+
+Route::get('/user/notifications', [NotificationController::class, 'index']);
+Route::put('/user/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+Route::put('/user/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+

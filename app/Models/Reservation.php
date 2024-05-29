@@ -16,6 +16,7 @@ class Reservation extends Model
         'product_qty',
         'file_path',
         'is_accepted',
+        'status', 
     ];
 
     public function user()
