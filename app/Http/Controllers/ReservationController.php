@@ -77,5 +77,12 @@ class ReservationController extends Controller
         $reservations = Reservation::where('status', '!=', 'pending')->get();
         return response()->json($reservations);
     }
+    public function Allreservation()
+    {
+        // Fetch all users from the database
+        $Reservation = Reservation::all();
 
+        // Return the users as JSON response
+        return response()->json(['Reservation' => $Reservation]);
+    }
 }

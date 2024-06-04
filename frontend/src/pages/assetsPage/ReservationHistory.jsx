@@ -6,6 +6,8 @@ import { saveAs } from 'file-saver';
 function ReservationHistory() {
   const [history, setHistory] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // You can adjust the number of items per page
 
   useEffect(() => {
     fetchReservationHistory();
@@ -14,15 +16,16 @@ function ReservationHistory() {
   const fetchReservationHistory = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/reservation-history');
-      // Reverse the array to show the latest reservations at the top
       setHistory(response.data.reverse());
     } catch (error) {
       console.error('Error fetching reservation history:', error);
     }
   };
+
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
+
   const generateCSV = () => {
     const filteredHistory = history.filter((reservation) =>
       new Date(reservation.created_at).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
@@ -44,10 +47,22 @@ function ReservationHistory() {
 
     link.click();
   };
+
   const handleClick = (event) => {
     event.preventDefault();
     handleReturnClick();
   };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Calculate the items to display on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = history.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(history.length / itemsPerPage);
 
   return (
     <div className="relative py-10 overflow-x-auto shadow-md sm:rounded-lg">
@@ -91,7 +106,7 @@ function ReservationHistory() {
           </tr>
         </thead>
         <tbody>
-          {history.map((reservation) => (
+          {currentItems.map((reservation) => (
             <tr key={reservation.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
               <td className="p-4">
                 <img
@@ -125,6 +140,17 @@ function ReservationHistory() {
           ))}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={`px-3 py-1 mx-1 border rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

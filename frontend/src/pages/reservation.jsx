@@ -5,48 +5,53 @@ import { Link, useNavigate } from 'react-router-dom';
 function Reservation() {
   const [reservations, setReservations] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [message, setMessage] = useState('');
+  const [isRejected, setIsRejected] = useState(false);
   const navigate = useNavigate();
-
+  const [shouldRefetch, setShouldRefetch] = useState(false);
+  
   useEffect(() => {
     fetchReservations();
-
+  
     const interval = setInterval(() => {
       setCurrentDate(new Date());
     }, 1000);
-
+  
     return () => clearInterval(interval);
-  }, []);
+  }, [shouldRefetch]);
+
 
   const fetchReservations = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/reservations');
       const filteredReservations = response.data.filter(reservation => reservation.is_accepted === null);
       setReservations(filteredReservations);
+      setShouldRefetch(false); // Reset shouldRefetch to false
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
   };
-
   const handleAcceptReservation = async (reservationId) => {
-    try {
-      const response = await axios.put(`http://localhost:8000/api/reservations/${reservationId}/accept`);
-      console.log(response.data.message);
-      fetchReservations();
-    } catch (error) {
-      console.error('Error accepting reservation:', error);
-    }
-  };
+  try {
+    const response = await axios.put(`http://localhost:8000/api/reservations/${reservationId}/accept`);
+    setMessage(response.data.message);
+    setIsRejected(false);
+    setShouldRefetch(true); // Set shouldRefetch to true
+  } catch (error) {
+    console.error('Error accepting reservation:', error);
+  }
+};
 
-  const handleRejectReservation = async (reservationId) => {
-    try {
-      const response = await axios.put(`http://localhost:8000/api/reservations/${reservationId}/reject`);
-      console.log(response.data.message);
-      fetchReservations();
-    } catch (error) {
-      console.error('Error rejecting reservation:', error);
-    }
-  };
-
+const handleRejectReservation = async (reservationId) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/api/reservations/${reservationId}/reject`);
+    setMessage(response.data.message);
+    setIsRejected(true);
+    setShouldRefetch(true); // Set shouldRefetch to true
+  } catch (error) {
+    console.error('Error rejecting reservation:', error);
+  }
+};
   return (
     <div className="relative py-10 overflow-x-auto shadow-md sm:rounded-lg">
       <div className="flex justify-between mb-4 m-6">
@@ -57,7 +62,16 @@ function Reservation() {
           </button>
         </Link>
       </div>
-
+      {message && (
+        <div
+          className={`${
+            isRejected ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700'
+          } px-4 py-3 rounded relative mb-4`}
+          role="alert"
+        >
+          <span className="block sm:inline">{message}</span>
+        </div>
+      )}
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

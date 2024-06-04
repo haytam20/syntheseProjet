@@ -58,10 +58,13 @@ const AddProduct = () => {
 
   return (
     <>
+ 
       {<div>
+        
         <h2 className="text-2xl mb-4 text-gray-800 bg-gray-50 flex items-center justify-center py-2">Add Product</h2>
         <ProductForm onSubmit={handleAddProduct} />
       </div> }
+       
    
       <div>
       <h2 className="text-2xl mb-4 text-gray-800 bg-gray-50 flex items-center justify-center py-2">Products</h2>

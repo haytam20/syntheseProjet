@@ -39,8 +39,8 @@ Route::post('/reservations', [ReservationController::class, 'store']);
 Route::put('/reservations/{reservationId}/accept', [ReservationController::class, 'acceptReservation']);
 Route::put('/reservations/{reservationId}/reject', [ReservationController::class, 'rejectReservation']);
 Route::get('/reservation-history', [ReservationController::class, 'history']);
-
-Route::get('/user/notifications', [NotificationController::class, 'index']);
-Route::put('/user/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
-Route::put('/user/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+Route::get('/allreseravtion', [ReservationController::class, 'Allreservation']);
+// Route::get('/user/notifications', [NotificationController::class, 'index']);
+// Route::put('/user/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+// Route::put('/user/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
 
